@@ -59,9 +59,10 @@ export default function Auth() {
       <View style={[styles.verticallySpaced, styles.mt20]}>
         {showCodeBox ? (
           <>
-            <Text>Enter the code you received in your email</Text>
+            <Text style={styles.text}>Enter the code you received in your email</Text>
 
             <TextInput
+              style={styles.input}
               onChangeText={(text) => setCode(text)}
               value={code}
               placeholder="000000"
@@ -72,8 +73,9 @@ export default function Auth() {
           </>
         ) : (
           <>
-            <Text>Sign in with your email</Text>
+            <Text style={styles.text}>Sign in with your email</Text>
             <TextInput
+              style={styles.input}
               onChangeText={(text) => setEmail(text)}
               value={email}
               placeholder="email@address.com"
@@ -90,8 +92,11 @@ export default function Auth() {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 40,
-    padding: 12,
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#f5f5f5',
+    padding: 16,
   },
   verticallySpaced: {
     paddingTop: 4,
@@ -100,5 +105,18 @@ const styles = StyleSheet.create({
   },
   mt20: {
     marginTop: 20,
+  },
+  input: {
+    height: 40,
+    borderColor: '#ccc',
+    borderWidth: 1,
+    borderRadius: 4,
+    paddingHorizontal: 8,
+    marginVertical: 10,
+    width: '100%',
+  },
+  text: {
+    fontSize: 16,
+    marginBottom: 10,
   },
 })
