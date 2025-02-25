@@ -20,7 +20,12 @@ export default function PlanTrip() {
         <>
             <Map center={mapCenter} zoom={mapZoom} />
             <SafeAreaView style={styles.container}>
-                <MapSearch setMapCenterPoint={(point) => setMapCenter(point) } setMapZoom={(zoom) => setMapZoom(zoom)} setSelectedLocationName={(name) => setSelectedLocationName(name)} />
+                <MapSearch 
+                    setMapCenterPoint={(point) => setMapCenter(point) } 
+                    setMapZoom={(zoom) => setMapZoom(zoom)} 
+                    setSelectedLocationName={(name) => setSelectedLocationName(name)} 
+                    mapCenterPoint={mapCenter}
+                />
             </SafeAreaView>
 
             { selectedLocationName !== undefined && (

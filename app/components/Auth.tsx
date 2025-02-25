@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { Alert, StyleSheet, View, AppState, Button, TextInput, Text } from 'react-native'
+import React, { useState, useEffect } from 'react'
+import { Alert, StyleSheet, View, AppState, Button, TextInput, Text, TouchableOpacity } from 'react-native'
 import { supabase } from '../../utils/supabase'
 
 // Tells Supabase Auth to continuously refresh the session automatically if
@@ -49,18 +49,16 @@ export default function Auth() {
     if (error) {
       console.error('Error signing in:', error)
       Alert.alert(error.message)
-    } else {
-      
     }
   }
 
   return (
     <View style={styles.container}>
-      <View style={[styles.verticallySpaced, styles.mt20]}>
+      <View style={styles.content}>
         {showCodeBox ? (
           <>
-            <Text style={styles.text}>Enter the code you received in your email</Text>
-
+            <Text>Check your email</Text>
+            <Text>We've sent a temporary login code to your inbox at {email}.</Text>
             <TextInput
               style={styles.input}
               onChangeText={(text) => setCode(text)}
@@ -70,6 +68,7 @@ export default function Auth() {
               keyboardType="numeric"
             />
             <Button title="Continue with login code" disabled={loading} onPress={() => signInWithCode()} />
+            <Button title="Back to login" onPress={() => setShowCodeBox(false)} />
           </>
         ) : (
           <>
@@ -93,10 +92,16 @@ export default function Auth() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     alignItems: 'center',
     backgroundColor: '#f5f5f5',
     padding: 16,
+  },
+  content: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
   },
   verticallySpaced: {
     paddingTop: 4,
@@ -118,5 +123,11 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 16,
     marginBottom: 10,
+  },
+  infoText: {
+    fontSize: 14,
+    color: '#888',
+    marginTop: 10,
+    textAlign: 'center',
   },
 })

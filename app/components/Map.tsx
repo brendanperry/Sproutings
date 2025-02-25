@@ -1,4 +1,4 @@
-import { Camera, CircleLayer, MapView, MarkerView, PointAnnotation, ShapeSource, SymbolLayer } from "@maplibre/maplibre-react-native";
+import { Camera, CircleLayer, MapView, MarkerView, PointAnnotation, ShapeSource, SymbolLayer, UserLocation } from "@maplibre/maplibre-react-native";
 import { StyleProp, StyleSheet, View, ViewStyle, Text } from "react-native";
 
 type MapProps = {
@@ -10,7 +10,7 @@ const Map = (props: MapProps) => {
     const styleUrl = `https://tiles.openfreemap.org/styles/liberty`;
     
     return (
-    <MapView mapStyle={styleUrl} style={styles.map} attributionEnabled={false} compassEnabled={false} rotateEnabled={false} pitchEnabled={false} centerCoordinate={props.mapCenter} zoomLevel={12}>
+    <MapView mapStyle={styleUrl} style={styles.map} compassEnabled={false} rotateEnabled={false} pitchEnabled={false}>
       <Camera
         centerCoordinate={props.center}
         zoomLevel={props.zoom}

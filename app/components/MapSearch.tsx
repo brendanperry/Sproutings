@@ -1,6 +1,7 @@
 import { supabase } from "@/utils/supabase";
-import { useState } from "react";
-import { TextInput, StyleSheet, View, Text, LayoutAnimation } from "react-native";
+import { debounce } from "lodash";
+import { useCallback, useState } from "react";
+import { TextInput, StyleSheet, View, Text, LayoutAnimation, Alert } from "react-native";
 
 type SearchResult = {
     coordinates: [number, number];
@@ -11,6 +12,7 @@ type SearchResult = {
 }
 
 type MapSearchProps = {
+    mapCenterPoint: [number, number];
     setMapCenterPoint: (coordinates: [number, number]) => void;
     setMapZoom: (zoom: number) => void;
     setSelectedLocationName: (name: string) => void;
@@ -19,30 +21,37 @@ type MapSearchProps = {
 const MapSearch = (props: MapSearchProps) => {
     const [searchValue, setSearchValue] = useState<string>("");
     const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
-
+    
     const handleSearch = async (text: string) => {
+        console.log("SEARCHING FOR: ", text);
         setSearchValue(text)
 
         if (text.length <= 3) {
             return
         }
 
-        const result = await supabase.functions.invoke('address-autocomplete', {
-            body: {
-                searchText: text,
-                lat: 41.1759911,
-                lng: -85.4922797
-              }
-        })
+        try {
+            const result = await supabase.functions.invoke('address-autocomplete', {
+                body: {
+                    searchText: text,
+                    lat: props.mapCenterPoint[0],
+                    lng: props.mapCenterPoint[1]
+                }
+            })
 
-        if (result.error) {
-            console.log(result.error);
-            return
+            if (result.error) {
+                console.log(result.error);
+                return
+            }
+
+            const data = result.data as SearchResult[];
+            setSearchResults(data);
+        } catch (error: any) {
+            Alert.alert(error.message)
         }
-
-        const data = result.data as SearchResult[];
-        setSearchResults(data);
     }
+
+    const handler = useCallback(debounce(handleSearch, 2000), []);
 
     return (
         <View style={styles.container}>
@@ -54,16 +63,16 @@ const MapSearch = (props: MapSearchProps) => {
                 keyboardType="default"
                 autoCorrect={false}
                 returnKeyType="search"
-                onChangeText={(text) => handleSearch(text)}
+                onChangeText={(text) => handler(text)}
             />
 
             <View style={styles.resultsContainer}>
                 {searchResults.map((result) => (
-                    <Text 
-                        key={result.id} 
-                        style={styles.result} 
-                        onPress={ () => {
-                            props.setMapCenterPoint(result.coordinates) 
+                    <Text
+                        key={result.id}
+                        style={styles.result}
+                        onPress={() => {
+                            props.setMapCenterPoint(result.coordinates)
                             props.setMapZoom(15)
                             props.setSelectedLocationName(result.name)
                         }}>
