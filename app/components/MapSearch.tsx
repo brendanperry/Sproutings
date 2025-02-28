@@ -24,9 +24,6 @@ const MapSearch = (props: MapSearchProps) => {
     const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
     
     const handleSearch = async (text: string) => {
-        console.log("SEARCHING FOR: ", text);
-        setSearchValue(text)
-
         if (text.length <= 3) {
             return
         }
@@ -52,7 +49,7 @@ const MapSearch = (props: MapSearchProps) => {
         }
     }
 
-    const handler = useCallback(debounce(handleSearch, 300), []);
+    const searchHandler = useCallback(debounce(handleSearch, 300), []);
 
     return (
         <View style={styles.container}>
@@ -64,7 +61,10 @@ const MapSearch = (props: MapSearchProps) => {
                 keyboardType="default"
                 autoCorrect={false}
                 returnKeyType="search"
-                onChangeText={(text) => handler(text)}
+                onChangeText={(text) =>  {
+                    setSearchValue(text)
+                    searchHandler(text)
+                }}
             />
 
             <View style={styles.resultsContainer}>
