@@ -16,6 +16,7 @@ type MapSearchProps = {
     setMapCenterPoint: (coordinates: [number, number]) => void;
     setMapZoom: (zoom: number) => void;
     setSelectedLocationName: (name: string) => void;
+    setSelectedLocationCoordinates: (coordinates: [number, number]) => void;
 }
 
 const MapSearch = (props: MapSearchProps) => {
@@ -51,7 +52,7 @@ const MapSearch = (props: MapSearchProps) => {
         }
     }
 
-    const handler = useCallback(debounce(handleSearch, 2000), []);
+    const handler = useCallback(debounce(handleSearch, 300), []);
 
     return (
         <View style={styles.container}>
@@ -75,6 +76,7 @@ const MapSearch = (props: MapSearchProps) => {
                             props.setMapCenterPoint(result.coordinates)
                             props.setMapZoom(15)
                             props.setSelectedLocationName(result.name)
+                            props.setSelectedLocationCoordinates(result.coordinates)
                         }}>
                         {result.name} {result.street} {result.label}
                     </Text>

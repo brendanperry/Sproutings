@@ -3,6 +3,7 @@ import Map from './components/Map';
 import MapSearch from './components/MapSearch';
 import { useState, useRef, useEffect } from 'react';
 import Animated, { Easing, FadeIn, FadeOut, SlideInDown, SlideInUp, SlideOutDown } from 'react-native-reanimated';
+import { Link } from 'expo-router';
 
 if (
     Platform.OS === 'android' &&
@@ -14,7 +15,8 @@ if (
 export default function PlanTrip() {
     const [mapCenter, setMapCenter] = useState<[number, number]>([-85.4922797, 41.1759911]);
     const [mapZoom, setMapZoom] = useState<number>(10);
-    const [selectedLocationName, setSelectedLocationName] = useState<String | undefined>(undefined);
+    const [selectedLocationName, setSelectedLocationName] = useState<string | undefined>(undefined);
+    const [selectedLocationCoordinates, setSelectedLocationCoordinates] = useState<[number, number] | undefined>(undefined);
 
     return (
         <>
@@ -24,6 +26,7 @@ export default function PlanTrip() {
                     setMapCenterPoint={(point) => setMapCenter(point) } 
                     setMapZoom={(zoom) => setMapZoom(zoom)} 
                     setSelectedLocationName={(name) => setSelectedLocationName(name)} 
+                    setSelectedLocationCoordinates={(coordinates) => setSelectedLocationCoordinates(coordinates)}
                     mapCenterPoint={mapCenter}
                 />
             </SafeAreaView>
@@ -33,6 +36,9 @@ export default function PlanTrip() {
                     <Text style={styles.header}>{selectedLocationName}</Text>
                     <Button title="Get Directions" onPress={() => console.log('Get Directions')} />
                     <Button title="Save Location" onPress={() => console.log('Save Location')} />
+                    {selectedLocationCoordinates && (
+                        <Link href={{ pathname: "/CreateOuting", params: { locationName: selectedLocationName, latitude: selectedLocationCoordinates[0], longitude: selectedLocationCoordinates[1]} }}>Create Outing</Link>
+                    )}
                     <Button title="Cancel" onPress={() => { setSelectedLocationName(undefined)} } />
                 </Animated.View>
             )}
