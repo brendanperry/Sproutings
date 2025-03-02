@@ -2,6 +2,7 @@ import { supabase } from "@/utils/supabase";
 import { debounce } from "lodash";
 import { useCallback, useState } from "react";
 import { TextInput, StyleSheet, View, Text, LayoutAnimation, Alert } from "react-native";
+import type { SelectedLocation } from '../PlanTrip'
 
 type SearchResult = {
     coordinates: [number, number];
@@ -13,10 +14,7 @@ type SearchResult = {
 
 type MapSearchProps = {
     mapCenterPoint: [number, number];
-    setMapCenterPoint: (coordinates: [number, number]) => void;
-    setMapZoom: (zoom: number) => void;
-    setSelectedLocationName: (name: string) => void;
-    setSelectedLocationCoordinates: (coordinates: [number, number]) => void;
+    setSelectedLocation: (location: SelectedLocation) => void;
 }
 
 const MapSearch = (props: MapSearchProps) => {
@@ -73,10 +71,7 @@ const MapSearch = (props: MapSearchProps) => {
                         key={result.id}
                         style={styles.result}
                         onPress={() => {
-                            props.setMapCenterPoint(result.coordinates)
-                            props.setMapZoom(15)
-                            props.setSelectedLocationName(result.name)
-                            props.setSelectedLocationCoordinates(result.coordinates)
+                            props.setSelectedLocation({ name: result.name, coordinates: result.coordinates })
                         }}>
                         {result.name} {result.street} {result.label}
                     </Text>

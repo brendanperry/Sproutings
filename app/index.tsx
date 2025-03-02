@@ -1,7 +1,7 @@
 import { supabase } from '@/utils/supabase';
 import { Session } from '@supabase/supabase-js';
 import { Link, useFocusEffect } from 'expo-router';
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import { Text, StyleSheet, View, Button, FlatList } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Auth from './components/Auth';

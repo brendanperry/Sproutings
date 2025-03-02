@@ -12,34 +12,45 @@ if (
     UIManager.setLayoutAnimationEnabledExperimental(true);
 }
 
+export type SelectedLocation = {
+    coordinates: [number, number];
+    name: string
+}
+
 export default function PlanTrip() {
     const [mapCenter, setMapCenter] = useState<[number, number]>([-85.4922797, 41.1759911]);
     const [mapZoom, setMapZoom] = useState<number>(10);
-    const [selectedLocationName, setSelectedLocationName] = useState<string | undefined>(undefined);
-    const [selectedLocationCoordinates, setSelectedLocationCoordinates] = useState<[number, number] | undefined>(undefined);
+    const [selectedLocation, setSelectedLocation] = useState<SelectedLocation | null>(null);
+
+    const updateSelectedLocation = (location: SelectedLocation) => {
+        setSelectedLocation(location);
+        setMapCenter(location.coordinates);
+        setMapZoom(15);
+    }
 
     return (
         <>
-            <Map center={mapCenter} zoom={mapZoom} />
+            <Map 
+                center={mapCenter} 
+                zoom={mapZoom} 
+                setSelectedLocation={(location) => updateSelectedLocation(location)}
+            />
             <SafeAreaView style={styles.container}>
                 <MapSearch 
-                    setMapCenterPoint={(point) => setMapCenter(point) } 
-                    setMapZoom={(zoom) => setMapZoom(zoom)} 
-                    setSelectedLocationName={(name) => setSelectedLocationName(name)} 
-                    setSelectedLocationCoordinates={(coordinates) => setSelectedLocationCoordinates(coordinates)}
+                    setSelectedLocation={(location) => updateSelectedLocation(location)} 
                     mapCenterPoint={mapCenter}
                 />
             </SafeAreaView>
 
-            { selectedLocationName !== undefined && (
+            { selectedLocation !== null && (
                 <Animated.View style={styles.floatingContainer} entering={SlideInDown.easing(Easing.elastic(0.75))} exiting={SlideOutDown}>
-                    <Text style={styles.header}>{selectedLocationName}</Text>
+                    <Text style={styles.header}>{selectedLocation.name}</Text>
                     <Button title="Get Directions" onPress={() => console.log('Get Directions')} />
                     <Button title="Save Location" onPress={() => console.log('Save Location')} />
-                    {selectedLocationCoordinates && (
-                        <Link href={{ pathname: "/CreateOuting", params: { locationName: selectedLocationName, latitude: selectedLocationCoordinates[0], longitude: selectedLocationCoordinates[1]} }}>Create Outing</Link>
+                    {selectedLocation.coordinates && (
+                        <Link href={{ pathname: "/CreateOuting", params: { locationName: selectedLocation.name, longitude: selectedLocation.coordinates[0], latitude: selectedLocation.coordinates[1]} }}>Create Outing</Link>
                     )}
-                    <Button title="Cancel" onPress={() => { setSelectedLocationName(undefined)} } />
+                    <Button title="Cancel" onPress={() => { setSelectedLocation(null)} } />
                 </Animated.View>
             )}
         </>
