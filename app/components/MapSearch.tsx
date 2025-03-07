@@ -1,8 +1,9 @@
 import { supabase } from "@/utils/supabase";
 import { debounce } from "lodash";
 import { useCallback, useState } from "react";
-import { TextInput, StyleSheet, View, Text, LayoutAnimation, Alert } from "react-native";
+import { TextInput, StyleSheet, View, Text, LayoutAnimation, Alert, Keyboard, TouchableOpacity } from "react-native";
 import type { SelectedLocation } from '../PlanTrip'
+import { Ionicons } from '@expo/vector-icons';
 
 type SearchResult = {
     coordinates: [number, number];
@@ -47,30 +48,54 @@ const MapSearch = (props: MapSearchProps) => {
         }
     }
 
+    const endSearch = () => {
+        Keyboard.dismiss()
+        setSearchResults([])
+    }
+
     const searchHandler = useCallback(debounce(handleSearch, 300), []);
 
     return (
         <View style={styles.container}>
-            <TextInput
-                value={searchValue}
-                style={styles.input}
-                placeholder="Search for a location"
-                autoCapitalize="none"
-                keyboardType="default"
-                autoCorrect={false}
-                returnKeyType="search"
-                onChangeText={(text) =>  {
-                    setSearchValue(text)
-                    searchHandler(text)
-                }}
-            />
+            <View style={styles.inputContainer}>
+                <TextInput
+                    value={searchValue}
+                    style={styles.input}
+                    placeholder="Search for a location"
+                    autoCapitalize="none"
+                    keyboardType="default"
+                    autoCorrect={false}
+                    returnKeyType="done"
+                    placeholderTextColor="#808080"
+                    onSubmitEditing={() => {
+                        endSearch()
+                    }}
+                    onChangeText={(text) =>  {
+                        setSearchValue(text)
+                        searchHandler(text)
+                    }}
+                />
+                {searchValue.length > 0 && (
+                    <TouchableOpacity
+                        style={styles.clearButton}
+                        onPress={() => {
+                            setSearchValue("");
+                            setSearchResults([]);
+                        }}
+                    >
+                        <Ionicons name="close-circle" size={20} color="#808080" />
+                    </TouchableOpacity>
+                )}
+            </View>
 
             <View style={styles.resultsContainer}>
-                {searchResults.map((result) => (
+                {searchResults.map((result, index) => (
                     <Text
                         key={result.id}
-                        style={styles.result}
+                        style={index == (searchResults.length - 1) ? lastResultStyle : styles.result }
                         onPress={() => {
+                            endSearch()
+                            setSearchValue(result.name)
                             props.setSelectedLocation({ name: result.name, coordinates: result.coordinates })
                         }}>
                         {result.name} {result.street} {result.label}
@@ -82,8 +107,22 @@ const MapSearch = (props: MapSearchProps) => {
 }
 
 const styles = StyleSheet.create({
-    input: {
+    container: {
+        flexDirection: "column",
+        flexGrow: 1
+    },
+    inputContainer: {
+        flexDirection: "row",
+        alignItems: "center",
         padding: 10,
+    },
+    input: {
+        flex: 1,
+        padding: 10,
+        color: "#000000"
+    },
+    clearButton: {
+        marginLeft: 10,
     },
     resultsContainer: {
         flexDirection: "column",
@@ -92,10 +131,6 @@ const styles = StyleSheet.create({
         backgroundColor: "#808080",
         padding: 10,
     },
-    container: {
-        flexDirection: "column",
-        flexGrow: 1
-    }
 });
 
 const lastResultStyle = {
@@ -103,5 +138,6 @@ const lastResultStyle = {
     borderBottomEndRadius: 5,
     borderBottomStartRadius: 5,
 };
+
 
 export default MapSearch;
