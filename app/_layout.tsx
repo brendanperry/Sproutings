@@ -1,8 +1,8 @@
-import { DarkTheme, DefaultTheme, ThemeProvider, useTheme } from "@react-navigation/native";
-import { Stack } from "expo-router";
-import { ColorSchemeName, useColorScheme } from 'react-native';
-import { CustomDarkTheme } from "../components/themes/darkTheme";
-import { CustomLightTheme } from "../components/themes/lightTheme";
+import { CustomDarkTheme } from '@/components/themes/darkTheme';
+import { CustomLightTheme } from '@/components/themes/lightTheme';
+import { ThemeProvider } from '@react-navigation/native';
+import { Stack } from 'expo-router';
+import { useColorScheme, ColorSchemeName } from 'react-native';
 
 export default function RootLayout() {
   const scheme = useColorScheme()
@@ -17,16 +17,8 @@ export default function RootLayout() {
   
   return (
     <ThemeProvider value={getAppTheme(scheme)}>
-      <Stack
-        screenOptions={{
-          headerShown: false,
-        }}>
-        <Stack.Screen options={{ headerShown: false, title: "Home" }} name="index" />
-        <Stack.Screen options={{ headerShown: true, title: "Plan Your Outing" }} name="PlanTrip" />
-        <Stack.Screen
-          options={{ headerShown: true, title: "Create Your Outing" }}
-          name="CreateOuting"
-        />
+      <Stack screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="(tabs)" />
       </Stack>
     </ThemeProvider>
   );

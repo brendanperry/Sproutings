@@ -4,7 +4,7 @@ import { Link, useFocusEffect } from 'expo-router';
 import { useState, useEffect, useMemo, useCallback, useContext } from 'react';
 import { Text, StyleSheet, View, Button, FlatList, Image, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import Auth from '../components/views/Auth';
+import Auth from '../../../components/views/Auth';
 import { ThemeContext } from '@react-navigation/native';
 import Avatar from '../assets/images/react-logo.png'
 
@@ -72,6 +72,8 @@ export default function Home() {
                     <Text style={[styles.outingsHeader, { color: theme?.colors.primary }]}>Your Outings</Text>
                     {/* <Link style={{ color: theme?.colors.primary }} href="/PlanTrip">Plan a Trip</Link>
                     <Button onPress={() => supabase.auth.signOut()} title="Sign Out" /> */}
+
+                    
 
                     <FlatList
                         data={outings}
