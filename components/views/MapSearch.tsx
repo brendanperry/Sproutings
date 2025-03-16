@@ -2,7 +2,7 @@ import { supabase } from "@/utils/supabase";
 import { debounce } from "lodash";
 import { useCallback, useState } from "react";
 import { TextInput, StyleSheet, View, Text, LayoutAnimation, Alert, Keyboard, TouchableOpacity } from "react-native";
-import type { SelectedLocation } from '../../app/(tabs)/(home)/PlanTrip'
+import type { SelectedLocation } from '../../app/(stack)/PlanTrip'
 import { Ionicons } from '@expo/vector-icons';
 
 type SearchResult = {

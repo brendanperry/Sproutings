@@ -1,7 +1,7 @@
 import { CustomDarkTheme } from '@/components/themes/darkTheme';
 import { CustomLightTheme } from '@/components/themes/lightTheme';
 import { ThemeProvider } from '@react-navigation/native';
-import { Stack } from 'expo-router';
+import { Slot, Stack } from 'expo-router';
 import { useColorScheme, ColorSchemeName } from 'react-native';
 
 export default function RootLayout() {
@@ -17,9 +17,10 @@ export default function RootLayout() {
   
   return (
     <ThemeProvider value={getAppTheme(scheme)}>
-      <Stack screenOptions={{ headerShown: false }}>
+      <Slot />
+      {/* <Stack screenOptions={{ headerShown: false, navigationBarHidden: true }}>
         <Stack.Screen name="(tabs)" />
-      </Stack>
+      </Stack> */}
     </ThemeProvider>
   );
 }

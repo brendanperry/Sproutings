@@ -3,7 +3,7 @@ import { Camera, CircleLayer, Images, MapView, ShapeSource, SymbolLayer } from "
 import { OnPressEvent } from "@maplibre/maplibre-react-native/lib/typescript/commonjs/src/types/OnPressEvent";
 import { useCallback, useEffect, useState } from "react";
 import { StyleSheet } from "react-native";
-import { SelectedLocation } from "../../app/(tabs)/(home)/PlanTrip";
+import { SelectedLocation } from "../../app/(stack)/PlanTrip";
 import MapPin from '../../assets/images/map-signs-solid.png'; // Import the image
 
 type MapProps = {

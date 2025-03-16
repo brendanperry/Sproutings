@@ -1,6 +1,6 @@
 import { SafeAreaView, Text, StyleSheet, View, Button, Dimensions, Platform, UIManager, LayoutAnimation } from 'react-native';
-import Map from '../../../components/views/Map';
-import MapSearch from '../../../components/views/MapSearch';
+import Map from '../../components/views/Map';
+import MapSearch from '../../components/views/MapSearch';
 import { useState, useRef, useEffect } from 'react';
 import Animated, { Easing, FadeIn, FadeOut, SlideInDown, SlideInUp, SlideOutDown } from 'react-native-reanimated';
 import { Link } from 'expo-router';

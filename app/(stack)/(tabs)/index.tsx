@@ -54,7 +54,7 @@ export default function Home() {
     });
 
     const renderOuting = ({ item }: { item: any }) => (
-        <View style={styles.outing}>
+        <View style={[styles.outing, { height: width * (3 / 2) - 125 }]}>
             <Image source={OutdoorsImage} style={styles.outingImage} resizeMode="cover" />
             <Text style={[styles.outingText, { fontWeight: 'bold'}]}>{item.places.name}</Text>
             <Text style={styles.outingText}>{item.name}</Text>
@@ -74,7 +74,7 @@ export default function Home() {
                         <Image source={Avatar} style={styles.avatar} />
                     </View>
 
-                    <Link href='/(tabs)/(home)/PlanTrip' asChild style={[styles.buttonContainer, { backgroundColor: theme?.colors.primary }]}>
+                    <Link href='/PlanTrip' asChild style={[styles.buttonContainer, { backgroundColor: theme?.colors.primary }]}>
                         <Pressable>
                             <Text style={[styles.button, { color: theme?.colors.background }]}>Plan your next outing</Text>
                         </Pressable>
@@ -85,20 +85,13 @@ export default function Home() {
                     <Carousel
                         ref={ref}
                         width={width}
-                        // height={width / 2}
+                        height={width * (3 / 2)}
                         data={outings}
                         onProgressChange={progress}
                         mode='parallax'
                         loop={false}
                         renderItem={renderOuting}
                     />
-{/* 
-                    <FlatList
-                        data={outings}
-                        renderItem={renderOuting}
-                        keyExtractor={(item) => item.id.toString()}
-                        contentContainerStyle={styles.outingsList}
-                    /> */}
                 </SafeAreaView>
             ) : (
                 <Auth />
@@ -172,6 +165,8 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.23,
         shadowRadius: 2.62,
         elevation: 4,
+        width: '100%',
+        marginTop: -50
     },
     outingImage: {
         width: '100%',
