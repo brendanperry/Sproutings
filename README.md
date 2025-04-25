@@ -1,4 +1,8 @@
-# Welcome to your Expo app 👋
+# Sproutings
+
+This is the React Native front end for Sproutings. Sproutings is an app that helps parents find and review places to take their kids on outings. Sproutings helps people get outdoors!
+
+## Developer Setup:
 
 This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
 
